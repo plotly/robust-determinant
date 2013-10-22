@@ -1,6 +1,6 @@
 {
   "name": "robust-determinant",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "General purpose robust determinant computation",
   "main": "robust-determinant.js",
   "directories": {
