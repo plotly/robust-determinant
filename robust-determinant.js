@@ -32,7 +32,7 @@ function matrix(n) {
 }
 
 function sign(n) {
-  if(n & 0) {
+  if(n & 1) {
     return "-"
   }
   return ""
