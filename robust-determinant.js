@@ -50,7 +50,6 @@ function generateSum(expr) {
 }
 
 function determinant(m) {
-  console.log("compute determinant: ", m, m.length)
   if(m.length === 2) {
     return ["sum(prod(", m[0][0], ",", m[1][1], "),prod(-", m[0][1], ",", m[1][0], "))"].join("")
   } else {
@@ -67,7 +66,6 @@ function compileDeterminant(n) {
     "function robustDeterminant",n, "(m){return ", 
       determinant(matrix(n)),
     "};return robustDeterminant", n].join(""))
-  console.log(proc + "")
   return proc(robustSum, robustScale, twoProduct)
 }
 
@@ -80,7 +78,6 @@ function computeDeterminant(m) {
   while(CACHE.length <= m.length) {
     CACHE.push(compileDeterminant(CACHE.length))
   }
-  console.log(CACHE)
   var p = CACHE[m.length]
   return p(m)
 }
