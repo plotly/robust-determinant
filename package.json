@@ -1,0 +1,37 @@
+{
+  "name": "robust-determinant",
+  "version": "0.0.0",
+  "description": "General purpose robust determinant computation",
+  "main": "robust-determinant.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "robust-sum": "~0.0.2",
+    "two-product": "~0.0.0",
+    "robust-scale": "~0.0.3"
+  },
+  "devDependencies": {
+    "tape": "~2.0.0",
+    "tap": "~0.4.4"
+  },
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mikolalysenko/robust-determinant.git"
+  },
+  "keywords": [
+    "robust",
+    "determinant",
+    "general",
+    "purpose",
+    "dimension"
+  ],
+  "author": "Mikola Lysenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikolalysenko/robust-determinant/issues"
+  }
+}
