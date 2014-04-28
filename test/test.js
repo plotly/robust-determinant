@@ -3,9 +3,8 @@
 var det = require("../robust-determinant.js")
 
 require("tape")(function(t) {
-
-
-  console.log(det([[1,2,3],[3,4,5],[6,7,8]]))
+  t.same(det([[1,2,3],[3,4,5],[6,7,8]]), [0])
+  t.same(det([[1,2], [3,4]]), [-2])
 
   t.end()
 })
