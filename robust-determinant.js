@@ -3,8 +3,9 @@
 var twoProduct = require("two-product")
 var robustSum = require("robust-sum")
 var robustScale = require("robust-scale")
+var compress = require("robust-compress")
 
-module.exports = computeDeterminant
+var NUM_EXPANDED = 6
 
 function cofactor(m, c) {
   var result = new Array(m.length-1)
@@ -62,11 +63,11 @@ function determinant(m) {
 }
 
 function compileDeterminant(n) {
-  var proc = new Function("sum", "scale", "prod", [
-    "function robustDeterminant",n, "(m){return ", 
+  var proc = new Function("sum", "scale", "prod", "compress", [
+    "function robustDeterminant",n, "(m){return compress(", 
       determinant(matrix(n)),
-    "};return robustDeterminant", n].join(""))
-  return proc(robustSum, robustScale, twoProduct)
+    ")};return robustDeterminant", n].join(""))
+  return proc(robustSum, robustScale, twoProduct, compress)
 }
 
 var CACHE = [
@@ -74,10 +75,29 @@ var CACHE = [
   function robustDeterminant1(m) { return [m[0][0]] }
 ]
 
-function computeDeterminant(m) {
-  while(CACHE.length <= m.length) {
+function generateDispatch() {
+  while(CACHE.length < NUM_EXPANDED) {
     CACHE.push(compileDeterminant(CACHE.length))
   }
-  var p = CACHE[m.length]
-  return p(m)
+  var procArgs = []
+  var code = ["function robustDeterminant(m){switch(m.length){"]
+  for(var i=0; i<NUM_EXPANDED; ++i) {
+    procArgs.push("det" + i)
+    code.push("case ", i, ":return det", i, "(m);")
+  }
+  code.push("}\
+var det=CACHE[m.length];\
+if(!det)\
+det=CACHE[m.length]=gen(m.length);\
+return det(m);\
+}\
+return robustDeterminant")
+  procArgs.push("CACHE", "gen", code.join(""))
+  var proc = Function.apply(undefined, procArgs)
+  module.exports = proc.apply(undefined, CACHE.concat([CACHE, compileDeterminant]))
+  for(var i=0; i<CACHE.length; ++i) {
+    module.exports[i] = CACHE[i]
+  }
 }
+
+generateDispatch()
