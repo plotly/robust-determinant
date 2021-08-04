@@ -45,25 +45,33 @@ var CACHE = [
   function robustDeterminant1(m) { return [m[0][0]] }
 ]
 
+function proc(det0, det1, det2, det3, det4, det5, CACHE, gen) {
+  return function robustDeterminant(m) {
+    switch (m.length) {
+      case 0:
+        return det0(m)
+      case 1:
+        return det1(m)
+      case 2:
+        return det2(m)
+      case 3:
+        return det3(m)
+      case 4:
+        return det4(m)
+      case 5:
+        return det5(m)
+    }
+    var det = CACHE[m.length]
+    if (!det) det = CACHE[m.length] = gen(m.length)
+    return det(m)
+  }
+}
+
 function generateDispatch() {
   while(CACHE.length < NUM_EXPANDED) {
     CACHE.push(compileDeterminant(CACHE.length))
   }
-  var procArgs = []
-  var code = ["function robustDeterminant(m){switch(m.length){"]
-  for(var i=0; i<NUM_EXPANDED; ++i) {
-    procArgs.push("det" + i)
-    code.push("case ", i, ":return det", i, "(m);")
-  }
-  code.push("}\
-var det=CACHE[m.length];\
-if(!det)\
-det=CACHE[m.length]=gen(m.length);\
-return det(m);\
-}\
-return robustDeterminant")
-  procArgs.push("CACHE", "gen", code.join(""))
-  var proc = Function.apply(undefined, procArgs)
+
   module.exports = proc.apply(undefined, CACHE.concat([CACHE, compileDeterminant]))
   for(var i=0; i<CACHE.length; ++i) {
     module.exports[i] = CACHE[i]
