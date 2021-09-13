@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mikolalysenko/robust-determinant.git"
+    "url": "git://github.com/plotly/robust-determinant.git"
   },
   "keywords": [
     "robust",
@@ -32,6 +32,6 @@
   "author": "Mikola Lysenko",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mikolalysenko/robust-determinant/issues"
+    "url": "https://github.com/plotly/robust-determinant/issues"
   }
 }
